@@ -1,4 +1,4 @@
-ResvDetail(App, db) {
+ResvDetail(App, db, updateInfo := 0) {
     RD := Gui("+AlwaysOnTop", "预订详情")
     RD.SetFont(, "微软雅黑")
 
@@ -30,7 +30,10 @@ ResvDetail(App, db) {
         round: Integer
     })
 
-    zoneSignal := signal("")
+    zoneSignal := signal(updateInfo = 0 
+        ? { period: " ", round: " " }
+        : { period: updateInfo["request"]["zone"]["period"], round: updateInfo["request"]["zone"]["round"]}
+    )
     restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
     tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 
@@ -142,38 +145,44 @@ ResvDetail(App, db) {
         RD.AddGroupBox("Section x30 y350 r4 w350", "客人信息"),
         ; name
         RD.AddText("xp+10 y+10 h20 0x200", "客人姓名"),
-        RD.AddEdit("vname x+13 w150 h20", ""),
+        RD.AddEdit("vname x+13 w150 h20", updateInfo == 0 ? "" : updateInfo["guest"]["name"]),
         ; room/conf.
         RD.AddText("xs10 y+10 h20 0x200", "房号/确认号"),
-        RD.AddEdit("vroomConf x+13 w150 h20 Number", ""),
+        RD.AddEdit("vroomConf x+13 w150 h20 Number", updateInfo == 0 ? "" : updateInfo["guest"]["nameConf"]),
         ; mobile
         RD.AddText("xs10 y+10 h20 0x200", "手机号码"),
-        RD.AddEdit("vmobile x+13 w150 h20 Number", ""),
+        RD.AddEdit("vmobile x+13 w150 h20 Number", updateInfo == 0 ? "" : updateInfo["guest"]["mobile"]),
         ; resv info
         RD.AddGroupBox("Section x30 y+10 r7 w350", "订台详情"),
         ; restaurant
         RD.AddText("xp+10 yp+30 h20 0x200", "预订餐厅"),
-        RD.AddDropDownList("vrestaurant w150 x+10 Choose1", restaurantList),
+        RD.AddDropDownList("vrestaurant w150 x+10 Choose" . updateInfo == 0 ? "1" : restaurantList.findIndex(r => r == updateInfo["request"]["restaurant"]), restaurantList),
         ; date
         RD.AddText("xs10 y+10 h20 0x200", "预订日期"),
-        RD.AddDateTime("vdate x+13 w150 Choose" . tomorrow, "LongDate"),
+        RD.AddDateTime("vdate x+13 w150 Choose" . updateInfo == 0 ? tomorrow : updateInfo["request"]["date"] , "LongDate"),
         ; time/zone
         RD.AddText("xs10 y+10 h20 0x200", "预订时间"),
-        RD.AddEdit("vtime x+13 w120 h20 Number", "").OnEvent("LoseFocus", (ctrl, _) => zoneSetter(ctrl.Value)),
+        RD.AddEdit("vtime x+13 w120 h20 Number", updateInfo == 0 ? "" : updateInfo["request"]["time"])
+          .OnEvent("LoseFocus", (ctrl, _) => zoneSetter(ctrl.Value)),
         RD.AddReactiveText("x+13 h20 0x200", "{1}第{2}轮", zoneSignal, ["period", "round"]),
         ; accommodate
         RD.AddText("xs10 y+10 h20 0x200", "用餐人数"),
-        RD.AddEdit("vaccommodate x+13 w150 h20 Number", ""),
+        RD.AddEdit("vaccommodate x+13 w150 h20 Number", updateInfo == 0 ? "" : updateInfo["request"]["accommodate"]),
         ; misc
         RD.AddGroupBox("Section x30 y+10 r7 w350", "其他信息"),
         ; booker
         RD.AddText("xs10 y+10 h20 0x200", "预订人"),
-        RD.AddEdit("vbooker x+13 w150 h20", ""),
+        RD.AddEdit("vbooker x+13 w150 h20", updateInfo == 0 ? "" : updateInfo["booker"]),
         ; remarks
         RD.AddText("xs10 y+10 h20 0x200", "备注信息"),
-        RD.AddEdit("vremarks x+13 w150 h20", ""),
+        RD.AddEdit("vremarks x+13 w150 h20", updateInfo == 0 ? "" : updateInfo["remarks"]),
         ; text send
-        RD.AddCheckbox("vtextSend xs10 y+10 h20 0x200", "已发短信"),
+        RD.AddCheckbox("vtextSend xs10 y+10 h20 0x200 " . updateInfo == 0 ? "" : 
+            updateInfo["textSend"] == true 
+            ? "Checked" 
+            : "", 
+            "已发短信"
+        ),
 
         ; btns
         RD.AddButton("y+20", "取消").OnEvent("Click", (*) => RD.Destroy())
