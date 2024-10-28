@@ -1,1 +1,8 @@
-{}
+{
+    "limit": {
+        "HongtuHall": {
+            "isLargeTable": 3,
+            "round1": "12"
+        }
+    }
+}
