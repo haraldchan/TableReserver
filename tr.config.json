@@ -2,7 +2,9 @@
     "limit": {
         "HongtuHall": {
             "isLargeTable": 3,
-            "round1": "12"
+            "round1": 12,
+            "round2": 15,
+            "round3": 15
         }
     }
 }
