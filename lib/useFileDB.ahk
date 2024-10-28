@@ -67,7 +67,7 @@ class useFileDB {
 		return loadedData
 	}
 
-	updateOne(fileName, queryDate, newJsonString) {
+	updateOne(newJsonString, queryDate, fileName) {
 		loop files, (this.main . "\" . queryDate . "\*.json") {
 			if (fileName . ".json" = A_LoopFileName) {
 				FileDelete(A_LoopFileFullPath)
