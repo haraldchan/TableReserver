@@ -26,8 +26,8 @@ ResvDetail(App, db) {
     })
 
     Zone := Struct({
-        period: String, ; Yamcha/Lunch/Dinner
-        round: Integer, ; 1/2/3
+        period: String, ; 早茶/午市/晚市
+        round: Integer
     })
 
     zoneSignal := signal("")
@@ -88,8 +88,6 @@ ResvDetail(App, db) {
         }
 
         currentRestaurant := RD.getCtrlByName("retaurant").Text
-        h := Number(SubStr(time, 1, 2))
-        m := Number(SubStr(time, 3, 2))
         period := ""
         round := 0
 
