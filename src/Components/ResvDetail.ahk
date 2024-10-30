@@ -79,7 +79,7 @@ ResvDetail(App, db, readInfo := 0) {
             resvInfo["textSend"] == true ? "已发短信" : ""
         )
 
-        ; msgbox resvInfo.stringify()
+        msgbox resvInfo.stringify()
     }
 
     /**
@@ -128,7 +128,7 @@ ResvDetail(App, db, readInfo := 0) {
 
                 if (time >= 1130 && time < 1300) {
                     round := 1
-                } else if (time > 1300 && time < 1500) {
+                } else if (time >= 1300 && time < 1500) {
                     round := 2
                 }
 
@@ -152,7 +152,7 @@ ResvDetail(App, db, readInfo := 0) {
 
     return (
         ; guest info
-        RD.AddGroupBox("Section x20 r4.5 w250", "客人信息").SetFont(, "Bold"),
+        RD.AddGroupBox("Section x20 r4.5 w250", "客人信息").SetFont("Bold s10.5"),
         ; name
         RD.AddText("xp+10 yp+25 h25 0x200", "客人姓名    "),
         RD.AddEdit("vname x+13 w150 h25", !readInfo ? "" : readInfo["guest"]["name"]),
@@ -164,7 +164,7 @@ ResvDetail(App, db, readInfo := 0) {
         RD.AddEdit("vmobile x+13 w150 h25 Number", !readInfo ? "" : readInfo["guest"]["mobile"]),
         
         ; resv info
-        RD.AddGroupBox("Section x20 y+30 r6 w250", "订台详情"),
+        RD.AddGroupBox("Section x20 y+20 r6 w250", "订台详情").SetFont("Bold s10.5"),
         ; restaurant
         RD.AddText("xp+10 yp+30 h25 0x200", "预订餐厅    "),
         RD.AddDropDownList("vrestaurant w150 x+10 Choose" . (!readInfo ? 1 :restaurantList.findIndex(r => r == readInfo["request"]["restaurant"])), restaurantList),
@@ -181,7 +181,7 @@ ResvDetail(App, db, readInfo := 0) {
         RD.AddEdit("vaccommodate x+13 w150 h25 Number", !readInfo ? "" : readInfo["request"]["accommodate"]),
         
         ; misc
-        RD.AddGroupBox("Section x20 y+30 r4.5 w250", "其他信息"),
+        RD.AddGroupBox("Section x20 y+20 r4.5 w250", "其他信息").SetFont("Bold s10.5"),
         ; booker
         RD.AddText("xp+10 yp+30 h25 0x200", "预订人       "),
         RD.AddEdit("vbooker x+13 w150 h25", !readInfo ? "" : readInfo["booker"]),
@@ -193,8 +193,8 @@ ResvDetail(App, db, readInfo := 0) {
         RD.AddCheckbox("vtextSend x+13 w150 h25 " . (!readInfo ? false : readInfo["textSend"] ? "Checked" : ""), "已发送"),
 
         ; btns
-        RD.AddButton("x20 y+20 w120 h30", "取消").OnEvent("Click", (*) => RD.Destroy()),
-        RD.AddButton("x+13 w120 h30", "提交").OnEvent("Click", (*) => saveResv())
+        RD.AddButton("x20 y+20 w120 h30", "取  消").OnEvent("Click", (*) => RD.Destroy()),
+        RD.AddButton("x+13 w120 h30", "提  交").OnEvent("Click", (*) => saveResv())
         RD.Show()
     )
 }
