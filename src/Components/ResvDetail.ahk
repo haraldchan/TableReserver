@@ -2,7 +2,6 @@ ResvDetail(App, db, readInfo := 0) {
     RD := Gui("+AlwaysOnTop", "预订详情")
     RD.SetFont(, "微软雅黑")
 
-
     Guest := Struct({
         name: String,
         roomConf: Integer,
@@ -24,7 +23,7 @@ ResvDetail(App, db, readInfo := 0) {
     })
 
     Reservation := Struct({
-        bookingId: Integer, ; A_Now . A_MSec . "rand" . Random(100)
+        bookingId: String, ; A_Now . A_MSec . "rand" . Random(100)
         guest: Guest,
         request: Request,
         booker: String,
@@ -46,13 +45,14 @@ ResvDetail(App, db, readInfo := 0) {
             bookingId: readInfo == 0 ? A_Now . A_MSec . "rand" . Random(100) : readInfo["bookingId"],
             guest: {
                 name: form.name,
-                roomConf: form.roomConf,
-                mobile: form.mobile
+                roomConf: Integer(form.roomConf),
+                mobile: Integer(form.mobile)
             },
             request: {
-                retaurant: restaurantList[form.restaurant],
-                accommodate: form.accommodate,
-                date: form.date,
+                restaurant: form.restaurant,
+                accommodate: Integer(form.accommodate),
+                date: FormatTime(form.date, "yyyyMMdd"),
+                time: form.time,
                 zone: {
                     period: zoneSignal.value["period"],
                     round: zoneSignal.value["round"]
@@ -78,6 +78,8 @@ ResvDetail(App, db, readInfo := 0) {
             resvInfo["booker"],
             resvInfo["textSend"] == true ? "已发短信" : ""
         )
+
+        ; msgbox resvInfo.stringify()
     }
 
     /**
@@ -175,25 +177,24 @@ ResvDetail(App, db, readInfo := 0) {
           .OnEvent("LoseFocus", (ctrl, _) => zoneSetter(ctrl.Value)),
         RD.AddReactiveText("x+13 h25 0x200", "{1} 第 {2} 轮", zoneSignal, ["period", "round"]),
         ; accommodate
-        RD.AddText("xs10 y+10 h20 0x200", "用餐人数    "),
-        RD.AddEdit("vaccommodate x+13 w150 h20 Number", !readInfo ? "" : readInfo["request"]["accommodate"]),
+        RD.AddText("xs10 y+10 h25 0x200", "用餐人数    "),
+        RD.AddEdit("vaccommodate x+13 w150 h25 Number", !readInfo ? "" : readInfo["request"]["accommodate"]),
         
         ; misc
-        RD.AddGroupBox("Section x20 y+30 r3 w250", "其他信息"),
+        RD.AddGroupBox("Section x20 y+30 r4.5 w250", "其他信息"),
         ; booker
-        RD.AddText("xp+10 yp+30 h20 0x200", "预订人       "),
-        RD.AddEdit("vbooker x+13 w150 h20", !readInfo ? "" : readInfo["booker"]),
+        RD.AddText("xp+10 yp+30 h25 0x200", "预订人       "),
+        RD.AddEdit("vbooker x+13 w150 h25", !readInfo ? "" : readInfo["booker"]),
         ; remarks
-        RD.AddText("xs10 y+10 h20 0x200", "备注信息    "),
-        RD.AddEdit("vremarks x+13 w150 h20", !readInfo ? "" : readInfo["remarks"]),
-        ; ; text send
-        ; RD.AddCheckbox("vtextSend xs10 y+10 h20 0x200 " . !readInfo ? false : readInfo["textSend"] ? "Checked" : "", "已发短信"),
+        RD.AddText("xs10 y+10 h25 0x200", "备注信息    "),
+        RD.AddEdit("vremarks x+13 w150 h25", !readInfo ? "" : readInfo["remarks"]),
+        ; text send
+        RD.AddText("xs10 y+10 h25 0x200", "预订短信    "),
+        RD.AddCheckbox("vtextSend x+13 w150 h25 " . (!readInfo ? false : readInfo["textSend"] ? "Checked" : ""), "已发送"),
 
-
-
-        ; ; btns
-        ; RD.AddButton("y+20", "取消").OnEvent("Click", (*) => RD.Destroy()),
-        ; RD.AddButton("x+20", "提交").OnEvent("Click", (*) => saveResv())
+        ; btns
+        RD.AddButton("x20 y+20 w120 h30", "取消").OnEvent("Click", (*) => RD.Destroy()),
+        RD.AddButton("x+13 w120 h30", "提交").OnEvent("Click", (*) => saveResv())
         RD.Show()
     )
 }
