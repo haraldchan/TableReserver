@@ -7,7 +7,7 @@
 version := "0.0.1"
 popupTitle := "TableReserve " . version
 winGroup := ["ahk_class SunAwtFrame"]
-global db := useFileDB({
+db := useFileDB({
     main: A_ScriptDir . "\db",
     cleanPeriod: 30
 })
@@ -19,7 +19,7 @@ TableReserve.OnEvent("Close", (*) => utils.quitApp("TableReserve", popupTitle, w
 
 App(TableReserve)
 
-TableReserve.Show()
+; TableReserve.Show()
 
 ; hotkey setup
 Pause:: TableReserve.Show()
