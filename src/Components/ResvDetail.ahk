@@ -76,7 +76,7 @@ ResvDetail(App, db, readInfo := 0) {
         if (StrLen(time) != 4) {
             MsgBox("时间格式必须为 HHMM。如：0800", "预订详情", "T2")
             RD.getCtrlByName("time").Text := ""
-            zoneSignal.set("")
+            zoneSignal.set({ period: " ", round: " " })
             return
         }
 
