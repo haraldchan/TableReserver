@@ -106,7 +106,7 @@ ResvDetail(App, db, readInfo := 0) {
                 } else if (time > 800 && time < 1130) {
                     round := 2
                 }
-            } else if (time > 1130 && time < 1730) {
+            } else if (time >= 1130 && time < 1730) {
                 period := "午市"
 
                 if (time >= 1130 && time < 1300) {
