@@ -33,7 +33,7 @@ class signal {
         this.value := newSignalValue is Func ? newSignalValue(this.value) : newSignalValue
 
         ; change to Map()
-        if (!(newSignalValue is Func) &&!(newSignalValue is Class) && newSignalValue is Object) {
+        if (!(newSignalValue is Func) && !(newSignalValue is Class) && newSignalValue is Object) {
             this.value := this.mapify(this.value)
         }
 
@@ -258,7 +258,7 @@ class AddReactive {
         }
     }
 
-    handleArcName(options){
+    handleArcName(options) {
         optionsString := this.ctrlType = "ListView" ? options.lvOptions : options
 
         optionsArr := StrSplit(optionsString, " ")
@@ -298,7 +298,7 @@ class AddReactive {
             return depend
         }
     }
-        
+
     handleFormatStr(formatStr, depend, key) {
         vals := []
 
@@ -352,9 +352,27 @@ class AddReactive {
 
     handleListViewUpdate() {
         this.ctrl.Delete()
+        ; for item in this.depend.value {
+        ;     itemIn := !(item is Map) ? JSON.parse(JSON.stringify(item)) : item
+        ;     rowData := this.titleKeys.map(key => itemIn[key])
+        ;     this.ctrl.Add(this.itemOptions, rowData*)
+        ; }
+
         for item in this.depend.value {
-            itemIn := !(item is Map) ? JSON.parse(JSON.stringify(item)) : item
-            rowData := this.titleKeys.map(key => itemIn[key])
+            if (item.base == Object.Prototype) {
+                itemIn := JSON.parse(JSON.stringify(item))
+            } else if (item is Map || item is OrderedMap) {
+                itemIn := item
+            }
+
+            rowData := this.titleKeys.map(key => getRowData(key, itemIn))
+            getRowData(key, itemIn, layer := 2) {
+                if (key is Array) { ; ["guest", "name"]
+                    return getRowData(key[layer], itemIn[key], layer++)
+                }
+
+                return itemIn[key]
+            }
             this.ctrl.Add(this.itemOptions, rowData*)
         }
 
