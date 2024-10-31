@@ -13,7 +13,7 @@ ResvDetail(App, db, readInfo := 0) {
         form := RD.Submit(false)
 
         for k, field in form.OwnProps() {
-            if (field == "remarks") {
+            if (k == "remarks") {
                 continue
             }
 
@@ -41,10 +41,11 @@ ResvDetail(App, db, readInfo := 0) {
                 isLargeTable: form.accommodate > 6 ? true : false
             },
             booker: form.booker,
-            remarks: form.remarks,
+            remarks: form.remarks, 
             textSend: form.textSend
         })
 
+        MsgBox resvInfo.stringify()
         ; if (readInfo = 0) {
         ;     db.add(resvInfo.stringify(), FormatTime(resvInfo["request"]["date"], "yyyyMMdd"), resvInfo["bookingId"])
         ; } else {
@@ -53,14 +54,14 @@ ResvDetail(App, db, readInfo := 0) {
 
         A_Clipboard := Format("已预订{1} {2}, {3}。 人数: {4}位，预订人：{5} {6}",
             resvInfo["request"]["restaurant"],
-            resvInfo["request"]["date"],
+            FormatTime(resvInfo["request"]["date"], "LongDate"),
             resvInfo["request"]["time"],
             resvInfo["request"]["accommodate"],
             resvInfo["booker"],
             resvInfo["textSend"] == true ? "已发短信" : ""
         )
 
-        msgbox resvInfo.stringify()
+        MsgBox(Format("已复制信息：`n`n{1}",A_Clipboard), popupTitle, "4096 T2")
     }
 
     /**
@@ -74,7 +75,7 @@ ResvDetail(App, db, readInfo := 0) {
         }
 
         if (StrLen(time) != 4) {
-            MsgBox("时间格式必须为 HHMM。如：0800", "预订详情", "T2")
+            MsgBox("时间格式必须为 HHMM。如：0800", "预订详情", "4096 T2")
             RD.getCtrlByName("time").Text := ""
             zoneSignal.set({ period: " ", round: " " })
             return
@@ -179,7 +180,7 @@ ResvDetail(App, db, readInfo := 0) {
         
         ; remarks
         RD.AddText("xs10 y+10 h25 0x200", "备注信息    "),
-        RD.AddEdit("vremarks x+13 w150 h25", !readInfo ? "" : readInfo["remarks"]),
+        RD.AddEdit("vremarks x+13 w150 h25", !readInfo ? "有位致电" : readInfo["remarks"]),
         
         ; text send
         RD.AddText("xs10 y+10 h25 0x200", "预订短信    "),
