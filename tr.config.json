@@ -1,10 +1,28 @@
 {
     "limit": {
-        "HongtuHall": {
+        "hongtuHall": {
             "isLargeTable": 3,
-            "round1": 12,
-            "round2": 15,
-            "round3": 15
+            "round1": 10,
+            "round2": 10,
+            "round3": 10
+        },
+        "jadeRiver": {
+            "roundB1": 10,
+            "roundB2": 10,
+            "roundL1": 10,
+            "roundL2": 10,
+            "roundD1": 10,
+            "roundD2": 10,
+            "roundD3": 10
+        },
+        "flavorsOfChina": {
+            "roundB1": 10,
+            "roundB2": 10,
+            "roundL1": 10,
+            "roundL2": 10,
+            "roundD1": 10,
+            "roundD2": 10,
+            "roundD3": 10
         }
     }
 }
