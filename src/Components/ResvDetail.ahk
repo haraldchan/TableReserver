@@ -10,7 +10,17 @@ ResvDetail(App, db, readInfo := 0) {
     tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 
     saveResv() {
-        form := RD.submit()
+        form := RD.Submit(false)
+
+        for k, field in form.OwnProps() {
+            if (field == "remarks") {
+                continue
+            }
+
+            if (field == "") {
+                return
+            }
+        }
 
         resvInfo := Reservation.new({
             bookingId: readInfo == 0 ? A_Now . A_MSec . "rand" . Random(100) : readInfo["bookingId"],
@@ -59,7 +69,8 @@ ResvDetail(App, db, readInfo := 0) {
      */
     zoneSetter(time) {
         if (time == "") {
-            zoneSignal.set("")
+            zoneSignal.set({ period: " ", round: " " })
+            return
         }
 
         if (StrLen(time) != 4) {
@@ -116,7 +127,7 @@ ResvDetail(App, db, readInfo := 0) {
             }
         }
 
-        zoneSignal.set({ time: time, period: period, round: round })
+        zoneSignal.set({ period: period, round: round })
     }
 
 
@@ -151,9 +162,9 @@ ResvDetail(App, db, readInfo := 0) {
         
         ; time/zone
         RD.AddText("xs10 y+10 h25 0x200", "预订时间    "),
-        RD.AddEdit("vtime x+13 w70 h25 Number", !readInfo ? "" : readInfo["request"]["time"])
+        RD.AddEdit("vtime x+13 w50 h25 Number", !readInfo ? "" : readInfo["request"]["time"])
           .OnEvent("LoseFocus", (ctrl, _) => zoneSetter(ctrl.Value)),
-        RD.AddReactiveText("x+13 h25 0x200", "{1} 第 {2} 轮", zoneSignal, ["period", "round"]),
+        RD.AddReactiveText("x+13 h25 w70 0x200", "{1} 第 {2} 轮", zoneSignal, ["period", "round"]),
         
         ; accommodate
         RD.AddText("xs10 y+10 h25 0x200", "用餐人数    "),
