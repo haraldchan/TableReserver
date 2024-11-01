@@ -359,6 +359,7 @@ class AddReactive {
         ; }
 
         for item in this.depend.value {
+            ; item -> Object || Map || OrderedMap
             if (item.base == Object.Prototype) {
                 itemIn := JSON.parse(JSON.stringify(item))
             } else if (item is Map || item is OrderedMap) {
@@ -366,13 +367,16 @@ class AddReactive {
             }
 
             rowData := this.titleKeys.map(key => getRowData(key, itemIn))
-            getRowData(key, itemIn, layer := 2) {
-                if (key is Array) { ; ["guest", "name"]
-                    return getRowData(key[layer], itemIn[key], layer++)
-                }
+            getRowData(key, itemIn, layer := 1) {
+                if (key is String) {
+                    return itemIn[key]
+                } 
 
-                return itemIn[key]
+                if (key is Array) {
+                    return getRowData(key[layer + 1], itemIn[key[layer]])
+                }
             }
+
             this.ctrl.Add(this.itemOptions, rowData*)
         }
 
