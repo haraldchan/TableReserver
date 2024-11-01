@@ -352,11 +352,6 @@ class AddReactive {
 
     handleListViewUpdate() {
         this.ctrl.Delete()
-        ; for item in this.depend.value {
-        ;     itemIn := !(item is Map) ? JSON.parse(JSON.stringify(item)) : item
-        ;     rowData := this.titleKeys.map(key => itemIn[key])
-        ;     this.ctrl.Add(this.itemOptions, rowData*)
-        ; }
 
         for item in this.depend.value {
             ; item -> Object || Map || OrderedMap
@@ -373,8 +368,16 @@ class AddReactive {
                 } 
 
                 if (key is Array) {
-                    return getRowData(key[layer + 1], itemIn[key[layer]])
+                    return getNested(key, itemIn, 1)    
                 }
+            }
+
+            getNested(keys, item, index) {
+                if !(item is Map) {
+                    return item
+                }
+
+                return getNested(keys, item[keys[index]], index+1)
             }
 
             this.ctrl.Add(this.itemOptions, rowData*)
