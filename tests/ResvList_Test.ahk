@@ -56,7 +56,7 @@ dummyResvs := [
         mobile: 18824190309
     },
     request: {
-        restaurant: "宏图府",
+        restaurant: "玉堂春暖",
         accommodate: 8,
         date: "20241101",
         time: "0800",
