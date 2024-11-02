@@ -10,22 +10,26 @@
         "jadeRiver": {
             "roundB1": 10,
             "roundB2": 10,
+            "roundBW": 20,
             "roundL1": 10,
             "roundL2": 10,
+            "roundLW": 20,
             "roundD1": 10,
             "roundD2": 10,
             "roundD3": 10,
-            "roundW": 20
+            "roundDW": 20
         },
         "flavorsOfChina": {
             "roundB1": 10,
             "roundB2": 10,
+            "roundBW": 20,
             "roundL1": 10,
             "roundL2": 10,
+            "roundLW": 20,
             "roundD1": 10,
             "roundD2": 10,
             "roundD3": 10,
-            "roundW": 20
+            "roundDW": 20
         }
     }
 }
