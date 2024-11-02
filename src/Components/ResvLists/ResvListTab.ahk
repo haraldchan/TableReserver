@@ -1,4 +1,5 @@
 #Include "./HongTuHall.ahk"
+#Include "./ThirdFloors.ahk"
 
 ResvListTab(App, reservations) {
     restaurantMap := OrderedMap(
@@ -16,6 +17,7 @@ ResvListTab(App, reservations) {
         HongTuHall(App, resvAll, limit["hongtuHall"]),
 
         Tab3.UseTab("玉堂春暖"),
+        ThirdFloors(App, resvAll, limit, "jadeRiver")
         Tab3.UseTab("风味餐厅"),
         Tab3.UseTab(0)
     )
