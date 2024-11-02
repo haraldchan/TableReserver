@@ -1,3 +1,8 @@
+/**
+ * @param {Gui} App main gui object.
+ * @param {signal<Array>} resvAll all reservations of the day
+ * @param {Map} hthLimit reservation limit from config
+ */
 HongTuHall(App, resvAll, hthLimit) {
     largeTable := computed(resvAll, all => all.filter(item => item["request"]["retaurant"] == "宏图府" && item["request"]["isLargeTable"]))
     round1 := computed(resvAll, all => all.filter(item => item["request"]["retaurant"] == "宏图府" && item["request"]["zone"]["round"] == 1))
