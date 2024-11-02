@@ -4,7 +4,8 @@
             "isLargeTable": 3,
             "round1": 10,
             "round2": 10,
-            "round3": 10
+            "round3": 10,
+            "roundW": 20
         },
         "jadeRiver": {
             "roundB1": 10,
@@ -13,7 +14,8 @@
             "roundL2": 10,
             "roundD1": 10,
             "roundD2": 10,
-            "roundD3": 10
+            "roundD3": 10,
+            "roundW": 20
         },
         "flavorsOfChina": {
             "roundB1": 10,
@@ -22,7 +24,8 @@
             "roundL2": 10,
             "roundD1": 10,
             "roundD2": 10,
-            "roundD3": 10
+            "roundD3": 10,
+            "roundW": 20
         }
     }
 }
