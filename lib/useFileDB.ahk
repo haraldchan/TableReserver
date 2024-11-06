@@ -11,7 +11,7 @@ class useFileDB {
 
 	add(jsonString, date := FormatTime(A_Now, "yyyyMMdd"), saveName := JSON.parse(jsonString)["fileName"] . ".json") {
 		dateFolder := "\" . date
-		fileName := "\" . saveName
+		fileName := "\" . saveName . ".json"
 		; create dateFolder if not exist yet
 		if (!DirExist(this.main . dateFolder)) {
 			DirCreate(this.main . dateFolder)
@@ -76,9 +76,13 @@ class useFileDB {
 		}
 
 		if (queryDate != FormatTime(A_Now, "yyyyMMdd")) {
-			FileDelete(this.archive . "\" . queryDate . " - archive.json")
-			this.createArchive(queryDate)
-			this.createArchiveBackup(queryDate)
+			if (this.archive != "") {
+				this.createArchive(queryDate)	
+				FileDelete(this.archive . "\" . queryDate . " - archive.json")
+			}
+			if (this.backup != "") {
+				this.createArchiveBackup(queryDate)
+			}
 		}
 	}
 
