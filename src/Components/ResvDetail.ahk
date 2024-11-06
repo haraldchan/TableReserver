@@ -45,12 +45,11 @@ ResvDetail(App, db, readInfo := 0) {
             textSend: form.textSend
         })
 
-        MsgBox resvInfo.stringify()
-        ; if (readInfo = 0) {
-        ;     db.add(resvInfo.stringify(), FormatTime(resvInfo["request"]["date"], "yyyyMMdd"), resvInfo["bookingId"])
-        ; } else {
-        ;     db.updateOne(resvInfo.stringify(), resvInfo["request"]["date"], resvInfo["bookingId"] . ".json")
-        ; }
+        if (readInfo = 0) {
+            db.add(resvInfo.stringify(), FormatTime(resvInfo["request"]["date"], "yyyyMMdd"), resvInfo["bookingId"])
+        } else {
+            db.updateOne(resvInfo.stringify(), resvInfo["request"]["date"], resvInfo["bookingId"])
+        }
 
         A_Clipboard := Format("已预订{1} {2}, {3}。 人数: {4}位，预订人：{5} {6}",
             resvInfo["request"]["restaurant"],
